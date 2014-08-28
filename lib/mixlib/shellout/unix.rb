@@ -147,6 +147,10 @@ module Mixlib
         Dir.chdir(cwd) if cwd
       end
 
+      def set_permissions
+          Process::UID.change_privilege(u.uid))
+      end
+
       # Process group id of the child. Returned as a negative value so you can
       # put it directly in arguments to kill, wait, etc.
       #
@@ -289,6 +293,7 @@ module Mixlib
           set_environment
           set_umask
           set_cwd
+          set_permissions
 
           begin
             command.kind_of?(Array) ? exec(*command, :close_others=>true) : exec(command, :close_others=>true)
